@@ -18,10 +18,22 @@ Attributes
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['wp-cli']['user']</tt></td>
+    <td><tt>['wp-cli']['path']</tt></td>
     <td>String</td>
-    <td>for ~/.wp.cli</td>
-    <td><tt>wp</tt></td>
+    <td>Install path</td>
+    <td><tt>'/usr/local/bin/wp'</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['wp-cli']['user']['name']</tt></td>
+    <td>String</td>
+    <td>User to configure ``~/.wp-cli``</td>
+    <td><tt>'wp'</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['wp-cli']['community_packages']</tt></td>
+    <td>Array</td>
+    <td>Community Packages to install</td>
+    <td></td>
   </tr>
 </table>
 
@@ -35,7 +47,9 @@ Just include `wp-cli` in your node's `run_list`:
 {
   "name":"my_node",
   "wp_cli": {
-      "user": "username"
+    "user": {
+      "name": "username"
+    }
   },
   "run_list": [
     "recipe[wp-cli]"

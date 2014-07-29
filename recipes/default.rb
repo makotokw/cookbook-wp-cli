@@ -17,41 +17,39 @@
 # limitations under the License.
 #
 
-remote_file '/usr/local/bin/wp' do
+remote_file node[:wp_cli][:path] do
   source 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
   mode 00755
 end
 
-# TODO: find home directory
-
 # install community packages
 # https://github.com/wp-cli/wp-cli/wiki/Community-Packages
 if node[:wp_cli][:community_packages]
-  directory "/home/#{node[:wp_cli][:user]}/.wp-cli/commands" do
-    owner node[:wp_cli][:user]
-    group node[:wp_cli][:user]
+  directory "#{node[:wp_cli][:user][:home]}/.wp-cli/commands" do
+    owner node[:wp_cli][:user][:name]
+    group node[:wp_cli][:user][:group]
     mode 00755
     recursive true
     action :create
-    only_if { Dir.exists?("/home/#{node[:wp_cli][:user]}") }
+    only_if { Dir.exists?(node[:wp_cli][:user][:home]) }
   end
 
   node[:wp_cli][:community_packages].each do | package |
-    git "/home/#{node[:wp_cli][:user]}/.wp-cli/commands/#{package[:name]}" do
+    git "#{node[:wp_cli][:user][:home]}/.wp-cli/commands/#{package[:name]}" do
       repository package[:repository]
       revision package[:revision] if package[:revision]
-      user node[:wp_cli][:user]
-      group node[:wp_cli][:user]
-      only_if { Dir.exists?("/home/#{node[:wp_cli][:user]}/.wp-cli/commands") }
+      user node[:wp_cli][:user][:name]
+      group node[:wp_cli][:user][:group]
+      only_if { Dir.exists?("#{node[:wp_cli][:user][:home]}/.wp-cli/commands") }
     end
   end
 
-  template "/home/#{node[:wp_cli][:user]}/.wp-cli/config.yml" do
+  template "#{node[:wp_cli][:user][:home]}/.wp-cli/config.yml" do
     source 'config.yml.erb'
-    owner node[:wp_cli][:user]
-    group node[:wp_cli][:user]
+    owner node[:wp_cli][:user][:name]
+    group node[:wp_cli][:user][:group]
     mode 00644
-    only_if { Dir.exists?("/home/#{node[:wp_cli][:user]}/.wp-cli") }
+    only_if { Dir.exists?("#{node[:wp_cli][:user][:home]}/.wp-cli") }
   end
 
 end
