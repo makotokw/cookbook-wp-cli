@@ -23,33 +23,10 @@ remote_file node[:wp_cli][:path] do
 end
 
 # install community packages
-# https://github.com/wp-cli/wp-cli/wiki/Community-Packages
-if node[:wp_cli][:community_packages]
-  directory "#{node[:wp_cli][:user][:home]}/.wp-cli/commands" do
-    owner node[:wp_cli][:user][:name]
+node[:wp_cli][:community_packages].each do | package |
+  execute "wp package install #{package}" do
+    user node[:wp_cli][:user][:name]
     group node[:wp_cli][:user][:group]
-    mode 00755
-    recursive true
-    action :create
-    only_if { Dir.exists?(node[:wp_cli][:user][:home]) }
+    environment ({'HOME' => node[:wp_cli][:user][:home]})
   end
-
-  node[:wp_cli][:community_packages].each do | package |
-    git "#{node[:wp_cli][:user][:home]}/.wp-cli/commands/#{package[:name]}" do
-      repository package[:repository]
-      revision package[:revision] if package[:revision]
-      user node[:wp_cli][:user][:name]
-      group node[:wp_cli][:user][:group]
-      only_if { Dir.exists?("#{node[:wp_cli][:user][:home]}/.wp-cli/commands") }
-    end
-  end
-
-  template "#{node[:wp_cli][:user][:home]}/.wp-cli/config.yml" do
-    source 'config.yml.erb'
-    owner node[:wp_cli][:user][:name]
-    group node[:wp_cli][:user][:group]
-    mode 00644
-    only_if { Dir.exists?("#{node[:wp_cli][:user][:home]}/.wp-cli") }
-  end
-
 end

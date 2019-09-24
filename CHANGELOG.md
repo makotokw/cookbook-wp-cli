@@ -3,6 +3,10 @@ wp-cli CHANGELOG
 
 This file is used to list changes made in each version of the wp-cli cookbook.
 
+1.0.0
+-----
+- use `wp package install` to install community packages
+
 0.2.1
 -----
 - Removed default community packages
@@ -15,7 +19,3 @@ This file is used to list changes made in each version of the wp-cli cookbook.
 -----
 - Initial release of wp-cli
 
-- - -
-Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
-
-The [Github Flavored Markdown page](http://github.github.com/github-flavored-markdown/) describes the differences between markdown on github and standard markdown.

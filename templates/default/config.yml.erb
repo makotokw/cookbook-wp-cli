@@ -1,6 +1,0 @@
-<% if node[:wp_cli][:community_packages] && node[:wp_cli][:community_packages].length > 0 %>
-require:
-<% node[:wp_cli][:community_packages].each do | package | %>
-  - commands/<%= package[:name] %>/<%= package[:file] %>
-<% end %>
-<% end %>

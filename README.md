@@ -18,21 +18,21 @@ Attributes
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['wp-cli']['path']</tt></td>
+    <td><code>['wp-cli']['path']</code></td>
     <td>String</td>
     <td>Install path</td>
-    <td><tt>'/usr/local/bin/wp'</tt></td>
+    <td><code>'/usr/local/bin/wp'</code></td>
   </tr>
   <tr>
-    <td><tt>['wp-cli']['user']['name']</tt></td>
+    <td><code>['wp-cli']['user']['name']</code></td>
     <td>String</td>
     <td>User to configure ``~/.wp-cli``</td>
-    <td><tt>'wp'</tt></td>
+    <td><code>'wp'</code></td>
   </tr>
   <tr>
-    <td><tt>['wp-cli']['community_packages']</tt></td>
+    <td><code>['wp-cli']['community_packages']</code></td>
     <td>Array</td>
-    <td>Community Packages to install</td>
+    <td>Community Packages to install. Name, git URL, directory path, or .zip file</td>
     <td></td>
   </tr>
 </table>
@@ -49,7 +49,12 @@ Just include `wp-cli` in your node's `run_list`:
   "wp_cli": {
     "user": {
       "name": "username"
-    }
+    },
+    "community_packages": [
+      "wp-cli/server-command:@stable",
+      "git@github.com:runcommand/hook.git",
+      "google-sitemap-generator-cli.zip"
+    ]
   },
   "run_list": [
     "recipe[wp-cli]"
